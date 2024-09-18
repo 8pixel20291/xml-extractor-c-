@@ -1,0 +1,67 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Linq;
+
+namespace extract_xml
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //worked just first item
+            //var doc = new XmlDocument();
+            //doc.Load(@"C:\Users\DearUser\Desktop\test.xml");
+            //var bookNodes = doc.SelectNodes(@"//PubmedArticleSet/PubmedArticle/MedlineCitation/Article");
+            //foreach (XmlNode item in bookNodes)
+            //{
+            //    string title = item.SelectSingleNode("./ArticleTitle").InnerText;
+            //    string price = item.SelectSingleNode("./Abstract").InnerText;
+            //    richTextBox1.AppendText(title + Environment.NewLine + price);
+            //}
+
+            StreamReader reader = new StreamReader(@"C:\Users\DearUser\Desktop\pubmed24n1218.xml");
+            string txt2 = reader.ReadToEnd();
+            reader.Close();
+            //var doc = new XmlDocument();
+            //doc.Load(@"C:\Users\DearUser\Desktop\test.xml");
+            XDocument doc2 = XDocument.Parse(txt2);
+
+            foreach (var doi in doc2.Descendants("ELocationID"))
+            {
+
+                if (doi.ToString().Contains("doi"))
+                {
+                    using (StreamWriter sw1 = File.AppendText(@"F:\corner\export-selenium-txt\pubabstract\test.txt"))
+                    {
+                        sw1.WriteLine(doi.Value + " vvvvvvvvvvvvvvvvvvvv");
+                    }
+                    using (StreamWriter sw1 = File.AppendText(@"F:\corner\export-selenium-txt\pubabstract\test2.txt"))
+                    {
+                        sw1.WriteLine(doi.ToString() + " vvvvvvvvvvvvvvvvvvvv");
+                    }
+                }
+                             
+            }
+
+            //foreach (var date in doc.Descendants("name"))
+            //{
+            //    Console.WriteLine(date.Value);
+            //}
+
+        }
+    }
+}
